@@ -6,10 +6,6 @@ You are a data scientist at a clothing company and are working with a data set o
 - Scaling your data
 - Working with date-time features
 
-Let’s get started!
-
-**Tasks**
-
 ## **Basic Exploration**
 
 1. Let’s start with some basic exploring by performing the following:
