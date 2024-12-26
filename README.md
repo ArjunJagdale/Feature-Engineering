@@ -10,10 +10,6 @@ Let’s get started!
 
 **Tasks**
 
-16/16 complete
-
-Mark the tasks as complete by checking them off
-
 ## **Basic Exploration**
 
 1. Let’s start with some basic exploring by performing the following:
