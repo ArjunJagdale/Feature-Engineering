@@ -1,5 +1,3 @@
-Here's a neatly formatted version for your README.md file:
-
 # **Transforming Data into Features**
 
 You are a data scientist at a clothing company and are working with a dataset of customer reviews. This dataset is originally from [Kaggle](https://www.kaggle.com/nicapotato/womens-ecommerce-clothing-reviews) and has a lot of potential for various machine learning purposes. You are tasked with transforming some of these features to make the data more useful for analysis. To do this, you will have time to practice the following:
