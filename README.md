@@ -1,68 +1,83 @@
-# **Transforming Data into Features**
+# Feature Engineering Project
 
-You are a data scientist at a clothing company and are working with a dataset of customer reviews. This dataset is originally from [Kaggle](https://www.kaggle.com/nicapotato/womens-ecommerce-clothing-reviews) and has a lot of potential for various machine learning purposes. You are tasked with transforming some of these features to make the data more useful for analysis. To do this, you will have time to practice the following:
+This project demonstrates various data transformation techniques on a customer reviews dataset to prepare it for machine learning analysis. The transformations include handling categorical data, scaling numerical features, and processing date-time values.
 
-- Transforming categorical data
-- Scaling your data
-- Working with date-time features
+## Code Explanation
 
-## **Basic Exploration**
+1. **Importing the Dataset**:
+   The dataset, `reviews.csv`, is imported into a Pandas DataFrame called `reviews`.
 
-1. Let’s start with some basic exploring by performing the following:
+   ```python
+   reviews = pd.read_csv('reviews.csv')
+   ```
 
-   - First, import your dataset. It is stored under a file named `reviews.csv`. Save it to a variable called `reviews`.
-   - Next, we want to look at the column names of our dataset along with their data types. Do the following two steps:
-     - Print the column names of your dataset.
-     - Check your features’ data types by printing `.info()`.
+2. **Exploring the Data**:
+   The first step is to inspect the dataset by printing the column names and data types.
 
-## **Data Transformations**
+   ```python
+   print(reviews.columns)
+   print(reviews.info())
+   ```
 
-1. Transform the `recommended` feature. Start by printing the feature’s `.value_counts()`.
+3. **Transforming the `recommended` Feature**:
+   The `recommended` feature is binary (True/False), so it is transformed into numerical values (1/0) using a dictionary called `binary_dict`.
 
-2. Since this is a True/False feature, we want to transform it to 1 for True and 0 for False.
+   ```python
+   binary_dict = {'True': 1, 'False': 0}
+   reviews['recommended'] = reviews['recommended'].map(binary_dict)
+   print(reviews['recommended'].value_counts())
+   ```
 
-   - To do this, create a dictionary called `binary_dict` where:
-     - The keys are what is currently in the `recommended` feature.
-     - The values are what we want in the new column (0s and 1s).
+4. **Transforming the `rating` Feature**:
+   The `rating` feature is ordinal, so its text values are replaced with corresponding numerical ratings using a dictionary called `rating_dict`.
 
-3. Using `binary_dict`, transform the `recommended` column so that it will now be binary. Print the results using `.value_counts()` to confirm the transformation.
+   ```python
+   rating_dict = {'Loved it': 5, 'Liked it': 4, 'Was okay': 3, 'Not great': 2, 'Hated it': 1}
+   reviews['rating'] = reviews['rating'].map(rating_dict)
+   print(reviews['rating'].value_counts())
+   ```
 
-4. Let’s run through a similar process to transform the `rating` feature. This is ordinal data, so our transformation should make that more clear. Again, start by printing the `.value_counts()`.
+5. **One-Hot Encoding the `department_name` Feature**:
+   The `department_name` feature is one-hot encoded using `pd.get_dummies()`, which creates new columns for each department.
 
-   - We want to make the following changes to the values:
-     - ‘Loved it’ → 5
-     - ‘Liked it’ → 4
-     - ‘Was okay’ → 3
-     - ‘Not great’ → 2
-     - ‘Hated it’ → 1
+   ```python
+   one_hot = pd.get_dummies(reviews['department_name'])
+   reviews = pd.concat([reviews, one_hot], axis=1)
+   print(reviews.columns)
+   ```
 
-   - Create a dictionary called `rating_dict` where the keys are what is currently in the feature and the values are what we want in the new column. You can use the hierarchy listed above to make your dictionary.
+6. **Transforming the `review_date` Feature**:
+   The `review_date` feature, originally in object format, is transformed into a date-time format using `pd.to_datetime()`.
 
-5. Using `rating_dict`, transform the `rating` column so it contains numerical values. Print the results using `.value_counts()` to confirm the transformation.
+   ```python
+   reviews['review_date'] = pd.to_datetime(reviews['review_date'])
+   print(reviews['review_date'].dtype)
+   ```
 
-6. Let’s now transform the `department_name` feature. This process will be slightly different, but start by printing the `.value_counts()` of the feature.
+7. **Scaling the Numerical Data**:
+   Finally, the numerical features are scaled using `StandardScaler` to bring them to a common scale.
 
-   - Use Panda’s `get_dummies` to one-hot encode our feature.
-   - Attach the results back to our original data frame.
-   - Print the column names to see!
+   ```python
+   from sklearn.preprocessing import StandardScaler
+   scaler = StandardScaler()
+   numerical_features = reviews.select_dtypes(include=['float64', 'int64'])
+   reviews_scaled = scaler.fit_transform(numerical_features)
+   ```
 
-7. Use Panda’s `get_dummies()` method to one-hot encode our feature. Assign this to a variable called `one_hot`.
+## Conclusion
 
-8. Join the results from `one_hot` back to our original data frame. Then print out the column names. What has been added?
+This project covers the essential data transformations required for machine learning tasks, including encoding categorical data, handling date-time features, and scaling numerical features. The transformed dataset is now ready for further analysis or model training.
 
-9. Let’s make one more feature transformation! Transform the `review_date` feature.
+## Requirements
 
-   - This feature is listed as an `object` type, but we want this to be transformed into a date-time feature.
-   - Transform `review_date` into a date-time feature.
-   - Print the feature type to confirm the transformation.
+To run the code, ensure you have the following libraries installed:
 
-## **Scaling the Data**
+- pandas
+- scikit-learn
 
-1. The final step we will take in our transformation project is scaling our data. We notice that we have a wide range of numbers thus far, so it is best to put everything on the same scale.
+You can install them using pip:
 
-   - Let’s get our data frame to only have the numerical features we created.
-   - Reset the index to be our `clothing_id` feature.
+```bash
+pip install pandas scikit-learn
+```
 
-2. We are ready to scale our data! Perform a `.fit_transform()` on our dataset, and print the results to see how the features have changed.
-
-3. Congratulations! You have successfully completed this transformation project. Transformations are an incredibly valuable skill to have. Great job!
